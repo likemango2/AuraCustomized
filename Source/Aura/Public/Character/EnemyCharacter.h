@@ -35,6 +35,14 @@ public:
 			UE_LOG(LogAura, Warning, TEXT("%s is Unhighlight"), *GetName())
 		}
 		bHighlight = bCond;
+		if(bHighlight)
+		{
+			HighlightActor();
+		}
+		else
+		{
+			UnHighlightActor();
+		}
 	}
 	FORCEINLINE bool GetHighlight() const { return bHighlight;}
 };
