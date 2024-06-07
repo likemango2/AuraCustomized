@@ -6,7 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Aura/Aura.h"
-#include "Character/EnemyCharacter.h"
+#include "Character/AuraEnemy.h"
 #include "Interface/EnemyInterface.h"
 
 
@@ -92,7 +92,7 @@ void AAuraPlayerController::CurseTrace()
 		// check if it should respond to highlight
 		if(HitResult.GetActor()->Implements<UEnemyInterface>())
 		{
-			if(AEnemyCharacter* EnemyCharacter =  Cast<AEnemyCharacter>(HitResult.GetActor()))
+			if(AAuraEnemy* EnemyCharacter =  Cast<AAuraEnemy>(HitResult.GetActor()))
 			{
 				bHitEnemy = true;
 				if(!EnemyCharacter->GetHighlight())

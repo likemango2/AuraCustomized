@@ -6,19 +6,22 @@
 #include "AuraCharacterBase.h"
 #include "Aura/Aura.h"
 #include "Interface/EnemyInterface.h"
-#include "EnemyCharacter.generated.h"
+#include "AuraEnemy.generated.h"
 
 UCLASS()
-class AURA_API AEnemyCharacter : public AAuraCharacterBase, public IEnemyInterface
+class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 {
 	GENERATED_BODY()
 
 public:
-	AEnemyCharacter();
+	AAuraEnemy();
 	
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 
+protected:
+	virtual void BeginPlay() override;
+	
 private:
 	UPROPERTY(VisibleAnywhere)
 	bool bHighlight = false;

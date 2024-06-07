@@ -7,7 +7,7 @@
 #include "Runtime/Engine/Classes/GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
-class AEnemyCharacter;
+class AAuraEnemy;
 struct FInputActionValue;
 class UInputAction;
 class UInputMappingContext;
@@ -38,5 +38,5 @@ private:
 	void CurseTrace();
 
 	UPROPERTY(VisibleAnywhere)
-	AEnemyCharacter* HighlightEnemy;
+	AAuraEnemy* HighlightEnemy;
 };
