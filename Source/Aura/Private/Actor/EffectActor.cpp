@@ -48,7 +48,7 @@ void AEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 			MutableAttributeSet->SetHealth(40.f);
 			UE_LOG(LogAura, Warning, TEXT("Modified Health = %f"), AttributeSet->GetHealth())
 			Destroy();
-		}
+		} 
 	}
 }
 
