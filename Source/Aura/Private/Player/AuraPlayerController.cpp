@@ -6,11 +6,20 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Aura/Aura.h"
+#include "Character/EnemyCharacter.h"
+#include "Interface/EnemyInterface.h"
 
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
+}
+
+void AAuraPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+
+	CurseTrace();
 }
 
 void AAuraPlayerController::BeginPlay()
@@ -51,8 +60,8 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 	float ForwardBackValue = AxisValue.X;
 	float LeftRightValue = AxisValue.Y;
 	
-	UE_LOG(LogAura, Warning, TEXT("ForwardBackValue %s"), *FString::SanitizeFloat(ForwardBackValue));
-	UE_LOG(LogAura, Warning, TEXT("LeftRightValue %s"), *FString::SanitizeFloat(LeftRightValue))
+	// UE_LOG(LogAura, Warning, TEXT("ForwardBackValue %s"), *FString::SanitizeFloat(ForwardBackValue));
+	// UE_LOG(LogAura, Warning, TEXT("LeftRightValue %s"), *FString::SanitizeFloat(LeftRightValue))
 	
 	const FRotator Rotator = GetControlRotation();
 	const FRotator YawRotator = FRotator(0, Rotator.Yaw, 0);
@@ -60,13 +69,50 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 	const FVector ControllerForward = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::X);
 	const FVector ControllerRight = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::Y);
 	
-	UE_LOG(LogAura, Warning, TEXT("GetControlRotation %s"), *Rotator.ToString());
-	UE_LOG(LogAura, Warning, TEXT("ControllerForward %s"), *ControllerForward.ToString());
-	UE_LOG(LogAura, Warning, TEXT("ControllerRight %s"), *ControllerRight.ToString())
+	// UE_LOG(LogAura, Warning, TEXT("GetControlRotation %s"), *Rotator.ToString());
+	// UE_LOG(LogAura, Warning, TEXT("ControllerForward %s"), *ControllerForward.ToString());
+	// UE_LOG(LogAura, Warning, TEXT("ControllerRight %s"), *ControllerRight.ToString())
 	
 	if(APawn* ControlledPawn = GetPawn<APawn>())
 	{
 		ControlledPawn->AddMovementInput(ControllerForward, ForwardBackValue);
 		ControlledPawn->AddMovementInput(ControllerRight, LeftRightValue);
+	}
+}
+
+void AAuraPlayerController::CurseTrace()
+{
+	FHitResult HitResult;
+	GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
+	bool bHitEnemy = false;
+	if(HitResult.bBlockingHit)
+	{
+		// UE_LOG(LogAura, Warning, TEXT("Hit Actor: %s"), *HitResult.GetActor()->GetName())
+
+		// check if it should respond to highlight
+		if(HitResult.GetActor()->Implements<UEnemyInterface>())
+		{
+			if(AEnemyCharacter* EnemyCharacter =  Cast<AEnemyCharacter>(HitResult.GetActor()))
+			{
+				bHitEnemy = true;
+				if(!EnemyCharacter->GetHighlight())
+				{
+					if(HighlightEnemy)
+					{
+						HighlightEnemy->SetHighlight(false);
+					}
+					HighlightEnemy = EnemyCharacter;
+					HighlightEnemy->SetHighlight(true);
+				}
+			}
+		}
+	}
+	if(!bHitEnemy)
+	{
+		if(HighlightEnemy)
+		{
+			HighlightEnemy->SetHighlight(false);
+			HighlightEnemy = nullptr;
+		}
 	}
 }
