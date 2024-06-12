@@ -15,3 +15,8 @@ void UAuraWidgetController::SetControllerParams(const FControllerParams& InParam
 	Params.PlayerState = InParams.PlayerState;
 	Params.AbilitySystemComponent = InParams.AbilitySystemComponent;
 }
+
+void UAuraWidgetController::BroadcastInitialValues()
+{
+	
+}

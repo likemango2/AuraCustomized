@@ -49,7 +49,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)	
 	void SetControllerParams(const FControllerParams& InParams);
-	
+	virtual void BroadcastInitialValues();
 protected:
 
 #pragma region Model-Layer
