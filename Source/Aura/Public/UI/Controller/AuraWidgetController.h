@@ -50,6 +50,7 @@ public:
 	UFUNCTION(BlueprintCallable)	
 	void SetControllerParams(const FControllerParams& InParams);
 	virtual void BroadcastInitialValues();
+	virtual void BindCallbacksToDependencies();
 protected:
 
 #pragma region Model-Layer
