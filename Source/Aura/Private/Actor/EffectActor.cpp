@@ -3,32 +3,42 @@
 
 #include "Actor/EffectActor.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
-#include "Aura/Aura.h"
-#include "Character/AuraCharacter.h"
-#include "Components/SphereComponent.h"
 
 AEffectActor::AEffectActor()
 {
-	PrimaryActorTick.bCanEverTick = true;
-
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("MeshComp");
-	SetRootComponent(Mesh);
-	Sphere = CreateDefaultSubobject<USphereComponent>("SphereComp");
-	Sphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	Sphere->SetupAttachment(Mesh);
+	PrimaryActorTick.bCanEverTick = false;
+	
+	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
 }
 
 void AEffectActor::BeginPlay()
 {
 	Super::BeginPlay();
-
-	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AEffectActor::OnBeginOverlap);
-	Sphere->OnComponentEndOverlap.AddDynamic(this, &AEffectActor::OnEndOverlap);
 }
 
+void AEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass)
+{
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	if(!TargetASC) return;
+
+	check(GameplayEffectClass)
+	
+	FGameplayEffectContextHandle EffectContextHandle = TargetASC->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(this);
+	const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
+	// TargetASC->ApplyGameplayEffectToSelf(EffectSpecHandle.Data.Get()->Def, 1.0f, EffectContextHandle);
+
+	/*
+	 * there are different functions, but finally they will call ApplyGameplayEffectSpecToSelf
+	 */
+	TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data);
+}
+
+/*
 void AEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if(OtherActor)
 	{
@@ -54,15 +64,4 @@ void AEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 			Destroy();
 		} 
 	}
-}
-
-void AEffectActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	if(OtherActor)
-	{
-		UE_LOG(LogAura, Warning, TEXT("OnEndOverlap, hit actor: %s"), *OtherActor->GetName());
-	}
-}
-
-
+}*/
