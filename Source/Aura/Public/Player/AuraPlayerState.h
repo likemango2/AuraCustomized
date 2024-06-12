@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
 #include "GameFramework/PlayerState.h"
 #include "AuraPlayerState.generated.h"
 
@@ -14,7 +15,7 @@ class UAuraAbilitySystemComponent;
  * 
  */
 UCLASS()
-class AURA_API AAuraPlayerState : public APlayerState
+class AURA_API AAuraPlayerState : public APlayerState, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -29,6 +30,6 @@ private:
 	TObjectPtr<UAttributeSet> AttributeSet;
 
 public:
-	UAbilitySystemComponent* GetAbilitySystemComponent() const {return AbilitySystemComponent;}
-	UAttributeSet* GetAttributeSet() const { return AttributeSet;}
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override {return AbilitySystemComponent;}
+	const UAttributeSet* GetAttributeSet() const;
 };

@@ -17,7 +17,7 @@ UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
-TObjectPtr<UAttributeSet> AAuraCharacterBase::GetAttributeSet() const
+TObjectPtr<const UAttributeSet> AAuraCharacterBase::GetAttributeSet() const
 {
 	return AttributeSet;
 }

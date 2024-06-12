@@ -8,6 +8,34 @@
 
 class UAttributeSet;
 class UAbilitySystemComponent;
+
+USTRUCT(BlueprintType)
+struct FControllerParams
+{
+	GENERATED_BODY()
+
+	FControllerParams() {}
+	FControllerParams(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, const UAttributeSet* AS)
+	{
+		PlayerController = PC;
+		PlayerState = PS;
+		AbilitySystemComponent = ASC;
+		AttributeSet = AS;
+	}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<APlayerController> PlayerController = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<APlayerState> PlayerState = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<const UAttributeSet> AttributeSet = nullptr;
+};
+
 /**
  * 
  */
@@ -19,19 +47,14 @@ class AURA_API UAuraWidgetController : public UObject
 public:
 	UAuraWidgetController();
 
+	UFUNCTION(BlueprintCallable)	
+	void SetControllerParams(const FControllerParams& InParams);
+	
 protected:
 
 #pragma region Model-Layer
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
-	TObjectPtr<APlayerController> PlayerController;
-
-	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
-	TObjectPtr<APlayerState> PlayerState;
-
-	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;	
-
-	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
-	TObjectPtr<UAttributeSet> AttributeSet;
-#pragma endregion 
+	FControllerParams Params;
+#pragma endregion
+	
 };

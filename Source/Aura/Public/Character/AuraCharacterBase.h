@@ -18,7 +18,7 @@ class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInte
 public:
 	AAuraCharacterBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	TObjectPtr<UAttributeSet> GetAttributeSet() const;
+	TObjectPtr<const UAttributeSet> GetAttributeSet() const;
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USkeletalMeshComponent> Weapon;
@@ -26,6 +26,7 @@ public:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
+	// attributeSet should be referenced as const ptr.
 	UPROPERTY()
-	TObjectPtr<UAttributeSet> AttributeSet;
+	TObjectPtr<const UAttributeSet> AttributeSet;
 };
