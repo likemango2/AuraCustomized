@@ -34,7 +34,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		{
 			for (const FGameplayTag& Tag : AssetTags)
 			{
-				// const FString Msg = FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString());
+				// const FString Msg = FString::Printf(TEXT("GE Tag: %s"0), *Tag.ToString());
 				// GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Blue, Msg);
 				FUIWidgetRow* Row = GetDatatableRow<FUIWidgetRow>(MessageWidgetDatatable, Tag);
 				MessageWidgetRowSignature.Broadcast(*Row);
