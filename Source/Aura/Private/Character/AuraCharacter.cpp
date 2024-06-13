@@ -4,6 +4,8 @@
 #include "Character/AuraCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Aura/Aura.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
@@ -52,6 +54,7 @@ void AAuraCharacter::InitAbilityActorInfo()
 
 	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
+	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->BindOnGameplayEffectApplied();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
 
 	if(AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
@@ -61,4 +64,19 @@ void AAuraCharacter::InitAbilityActorInfo()
 			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
+
+	// AbilitySystemComponent->OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &AAuraCharacter::OnApplyActivateGameplayEffectCallback);
+	// AbilitySystemComponent->OnAnyGameplayEffectRemovedDelegate().AddUObject(this, &AAuraCharacter::OnRemoveGameplayEffectCallback);
 }
+
+// void AAuraCharacter::OnApplyActivateGameplayEffectCallback(UAbilitySystemComponent* SelfAbilitySystemComponent,const FGameplayEffectSpec& GameplayEffectSpec,
+// 	FActiveGameplayEffectHandle ActiveGameplayEffectHandle) const
+// {
+// 	UE_LOG(LogAura, Warning, TEXT("Apply Gameplay Effect: %s" ), *GameplayEffectSpec.Def->GetName());
+// 	UE_LOG(LogAura, Warning, TEXT("It's in the FActiveGameplayEffectsContainer index: %s" ), *ActiveGameplayEffectHandle.ToString());
+// }
+//
+// void AAuraCharacter::OnRemoveGameplayEffectCallback(const FActiveGameplayEffect& ActiveGameplayEffect) const
+// {
+// 	UE_LOG(LogAura, Warning, TEXT("Remove Gameplay Effect: %s" ), *ActiveGameplayEffect.Spec.Def->GetName());
+// }

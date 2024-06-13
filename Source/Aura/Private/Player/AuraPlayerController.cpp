@@ -3,9 +3,11 @@
 
 #include "Player/AuraPlayerController.h"
 
+#include "AbilitySystemComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Aura/Aura.h"
+#include "Character/AuraCharacter.h"
 #include "Character/AuraEnemy.h"
 #include "Interface/EnemyInterface.h"
 
@@ -48,6 +50,27 @@ void AAuraPlayerController::SetupInputComponent()
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+}
+
+bool AAuraPlayerController::Exec(UWorld* InWorld, const TCHAR* Cmd, FOutputDevice& Ar)
+{
+	return HasAnyFlags(RF_ClassDefaultObject) ? false : ProcessConsoleExec(Cmd, Ar, nullptr);
+}
+
+void AAuraPlayerController::LogActivateGameplayAbilityEffect() const
+{
+	if(AAuraCharacter* AuraCharacter = Cast<AAuraCharacter>(GetCharacter()))
+	{
+		if(UAbilitySystemComponent* AbilitySystemComponent = AuraCharacter->GetAbilitySystemComponent())
+		{
+			const FActiveGameplayEffectsContainer& ActiveGameplayEffectsContainer = AbilitySystemComponent->GetActiveGameplayEffects();
+			for(auto It = ActiveGameplayEffectsContainer.CreateConstIterator(); It; ++It)
+			{
+				FGameplayEffectSpec Value = It->Spec;
+				UE_LOG(LogAura, Warning, TEXT("Current GE : %s"), *Value.Def.GetName());
+			}
+		}
+	}
 }
 
 void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)

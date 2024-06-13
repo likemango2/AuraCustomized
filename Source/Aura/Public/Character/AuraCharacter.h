@@ -6,6 +6,10 @@
 #include "AuraCharacterBase.h"
 #include "AuraCharacter.generated.h"
 
+struct FActiveGameplayEffect;
+struct FActiveGameplayEffectHandle;
+struct FGameplayEffectSpec;
+
 UCLASS()
 class AURA_API AAuraCharacter : public AAuraCharacterBase
 {
@@ -18,5 +22,8 @@ public:
 	virtual void OnRep_PlayerState() override;
 
 private:
-	void InitAbilityActorInfo();
+	virtual void InitAbilityActorInfo() override;
+
+	// void OnApplyActivateGameplayEffectCallback(UAbilitySystemComponent* SelfAbilitySystemComponent, const FGameplayEffectSpec& GameplayEffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle) const;
+	// void OnRemoveGameplayEffectCallback(const FActiveGameplayEffect& ActiveGameplayEffect) const;
 };

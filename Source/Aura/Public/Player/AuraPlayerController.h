@@ -15,7 +15,7 @@ class UInputMappingContext;
  * 
  */
 UCLASS()
-class AURA_API AAuraPlayerController : public APlayerController
+class AURA_API AAuraPlayerController : public APlayerController, public FSelfRegisteringExec
 {
 	GENERATED_BODY()
 
@@ -26,6 +26,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+
+	virtual bool Exec(UWorld* InWorld, const TCHAR* Cmd, FOutputDevice& Ar) override;
+	UFUNCTION(Exec)
+	void LogActivateGameplayAbilityEffect() const;
 	
 private:
 	UPROPERTY(EditAnywhere, Category="Input")
