@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "AuraCharacterBase.generated.h"
 
+class UGameplayEffect;
 class UAuraAttributeSet;
 class UAttributeSet;
 
@@ -30,4 +31,9 @@ public:
 	// attributeSet should be referenced as const ptr.
 	UPROPERTY()
 	TObjectPtr<const UAttributeSet> AttributeSet;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
+	TSubclassOf<UGameplayEffect> GEInitialAttributes;
+
+	void InitializePrimaryAttributes() const;
 };

@@ -64,7 +64,7 @@ void AAuraCharacter::InitAbilityActorInfo()
 			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-
+	InitializePrimaryAttributes();
 	// AbilitySystemComponent->OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &AAuraCharacter::OnApplyActivateGameplayEffectCallback);
 	// AbilitySystemComponent->OnAnyGameplayEffectRemovedDelegate().AddUObject(this, &AAuraCharacter::OnRemoveGameplayEffectCallback);
 }
