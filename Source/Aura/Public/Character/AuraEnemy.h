@@ -22,10 +22,13 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
-	
+	virtual int32 GetPlayerLevel() const override;
 private:
 	UPROPERTY(VisibleAnywhere)
 	bool bHighlight = false;
+
+	UPROPERTY()
+	int32 Level;
 
 public:
 	FORCEINLINE void SetHighlight(bool bCond)

@@ -47,6 +47,13 @@ void AAuraCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
+int32 AAuraCharacter::GetPlayerLevel() const
+{
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	if(!AuraPlayerState) return Super::GetPlayerLevel();
+	return AuraPlayerState->GetPlayerLevel();
+}
+
 void AAuraCharacter::InitAbilityActorInfo()
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
@@ -64,7 +71,7 @@ void AAuraCharacter::InitAbilityActorInfo()
 			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	InitializePrimaryAttributes();
+	InitializeDefaultAttributes();
 	// AbilitySystemComponent->OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &AAuraCharacter::OnApplyActivateGameplayEffectCallback);
 	// AbilitySystemComponent->OnAnyGameplayEffectRemovedDelegate().AddUObject(this, &AAuraCharacter::OnRemoveGameplayEffectCallback);
 }
