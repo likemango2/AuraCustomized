@@ -49,6 +49,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)	
 	void SetControllerParams(const FControllerParams& InParams);
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
 	virtual void BindCallbacksToDependencies();
 protected:
