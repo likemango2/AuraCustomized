@@ -13,8 +13,18 @@ void UAuraAbilitySystemComponent::BindOnGameplayEffectApplied()
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::OnGameplayEffectApplied);
 }
 
+void UAuraAbilitySystemComponent::AddAbilitiesToCharacter(const TArray<TSubclassOf<UGameplayAbility>>& AbilitiesClass)
+{
+	for(TSubclassOf<UGameplayAbility> AbilityClass : AbilitiesClass)
+	{
+		FGameplayAbilitySpec GameplayAbilitySpec(AbilityClass, 1);
+		// GiveAbility(GameplayAbilitySpec);
+		GiveAbilityAndActivateOnce(GameplayAbilitySpec);
+	}
+}
+
 void UAuraAbilitySystemComponent::OnGameplayEffectApplied(UAbilitySystemComponent* InAbilityComponent,
-	const FGameplayEffectSpec& GameplayEffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle) const
+                                                          const FGameplayEffectSpec& GameplayEffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle) const
 {
 	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Blue, FString::Printf(TEXT("Effect Applied : %s"), *GameplayEffectSpec.Def->GetName()));
 

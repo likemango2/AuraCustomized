@@ -7,6 +7,7 @@
 
 #include "AuraAbilitySystemComponent.generated.h"
 
+class UAuraGameplayAbility;
 DECLARE_MULTICAST_DELEGATE_OneParam(FAppliedGameplayEffectAssetTags, const FGameplayTagContainer& /*AssetTags*/);
 
 UCLASS()
@@ -18,6 +19,7 @@ public:
 	UAuraAbilitySystemComponent();
 
 	void BindOnGameplayEffectApplied();
+	void AddAbilitiesToCharacter(const TArray<TSubclassOf<UGameplayAbility>>& AbilitiesClass);
 
 	FAppliedGameplayEffectAssetTags AppliedGameplayEffectAssetTags;
 

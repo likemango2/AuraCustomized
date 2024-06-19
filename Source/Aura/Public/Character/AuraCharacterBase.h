@@ -8,6 +8,7 @@
 #include "Interface/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UGameplayAbility;
 class UGameplayEffect;
 class UAuraAttributeSet;
 class UAttributeSet;
@@ -41,7 +42,11 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
 	TSubclassOf<UGameplayEffect> GEInitialVitalAttributes;
+
+	UPROPERTY(EditAnywhere, Category="Ability")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, int32 Level) const;
 	void InitializeDefaultAttributes() const;
+	void GiveStartupAbilities();
 };
