@@ -21,6 +21,9 @@ public:
 	void BindOnGameplayEffectApplied();
 	void AddAbilitiesToCharacter(const TArray<TSubclassOf<UGameplayAbility>>& AbilitiesClass);
 
+	void AbilityInputTagHeld(const FGameplayTag& InputTag);
+	void AbilityInputTagReleased(const FGameplayTag& InputTag);
+	
 	FAppliedGameplayEffectAssetTags AppliedGameplayEffectAssetTags;
 
 protected:

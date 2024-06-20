@@ -7,6 +7,9 @@
 #include "Runtime/Engine/Classes/GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class UAuraAbilitySystemComponent;
+class UAuraInputConfig;
+struct FGameplayTag;
 class UAuraUserWidget;
 class AAuraEnemy;
 struct FInputActionValue;
@@ -44,4 +47,16 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	AAuraEnemy* HighlightEnemy;
+
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UAuraInputConfig> InputConfig;
+
+	UPROPERTY()
+	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
+
+	UAuraAbilitySystemComponent* GetASC();
 };
