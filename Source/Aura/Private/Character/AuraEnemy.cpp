@@ -55,3 +55,11 @@ int32 AAuraEnemy::GetPlayerLevel() const
 	return Level;
 }
 
+void AAuraEnemy::SetHighlight(bool bCond)
+{
+	bHighlight = bCond;
+	if (bHighlight)
+		HighlightActor();
+	else
+		UnHighlightActor();
+}

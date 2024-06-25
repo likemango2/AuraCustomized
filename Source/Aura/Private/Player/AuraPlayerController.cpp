@@ -136,17 +136,16 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AAuraPlayerController::CurseTrace()
 {
-	FHitResult HitResult;
-	GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	bool bHitEnemy = false;
-	if(HitResult.bBlockingHit)
+	if(CursorHit.bBlockingHit)
 	{
 		// UE_LOG(LogAura, Warning, TEXT("Hit Actor: %s"), *HitResult.GetActor()->GetName())
 
 		// check if it should respond to highlight
-		if(HitResult.GetActor()->Implements<UEnemyInterface>())
+		if(CursorHit.GetActor()->Implements<UEnemyInterface>())
 		{
-			if(AAuraEnemy* EnemyCharacter =  Cast<AAuraEnemy>(HitResult.GetActor()))
+			if(AAuraEnemy* EnemyCharacter =  Cast<AAuraEnemy>(CursorHit.GetActor()))
 			{
 				bHitEnemy = true;
 				if(!EnemyCharacter->GetHighlight())
@@ -173,7 +172,6 @@ void AAuraPlayerController::CurseTrace()
 
 void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	// GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
 	if(InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		bTargeting = HighlightEnemy ? true : false;
@@ -183,20 +181,7 @@ void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	// GEngine->AddOnScreenDebugMessage(2, 3.f, FColor::Blue, *InputTag.ToString());
-	// if(InputTag.IsValid())
-	// {
-	// 	GetASC()->AbilityInputTagReleased(InputTag);
-	// }
-	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
-	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagReleased(InputTag);
-		}
-		return;
-	}
-	if(bTargeting)
+	if(!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB) || bTargeting)
 	{
 		if(GetASC())
 		{
@@ -214,7 +199,11 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				for(const FVector& PointLoc : NavPath->PathPoints)
 				{
 					Spline->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
-					DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Green, false, 5.f);
+					// DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Green, false, 5.f);
+				}
+				if(NavPath->PathPoints.Num() > 0)
+				{
+					CacheDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 				}
 				bAutoRunning = true;
 			}
@@ -226,20 +215,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	// GEngine->AddOnScreenDebugMessage(3, 3.f, FColor::Green, *InputTag.ToString());
-	// if(InputTag.IsValid())
-	// {
-	// 	GetASC()->AbilityInputTagHeld(InputTag);
-	// }
-	if(!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
-	{
-		if(GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
-		return;
-	}
-	if(bTargeting)
+	if(!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB) || bTargeting)
 	{
 		if(GetASC())
 		{
@@ -249,10 +225,9 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 	else
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
-		FHitResult Hit;
-		if(GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+		if(GetHitResultUnderCursor(ECC_Visibility, false, CursorHit))
 		{
-			CacheDestination = Hit.ImpactPoint;
+			CacheDestination = CursorHit.ImpactPoint;
 		}
 		if(APawn* ControlledPawn = GetPawn())
 		{

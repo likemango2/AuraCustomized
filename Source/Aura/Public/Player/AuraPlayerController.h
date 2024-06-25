@@ -45,6 +45,7 @@ private:
 	void Move(const FInputActionValue& InputActionValue);
 
 	void CurseTrace();
+	FHitResult CursorHit;
 
 	UPROPERTY(VisibleAnywhere)
 	AAuraEnemy* HighlightEnemy;

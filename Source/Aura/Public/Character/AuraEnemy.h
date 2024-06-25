@@ -31,25 +31,6 @@ private:
 	int32 Level;
 
 public:
-	FORCEINLINE void SetHighlight(bool bCond)
-	{
-		if(bCond)
-		{
-			UE_LOG(LogAura, Warning, TEXT("%s is highlight"), *GetName())
-		}
-		else
-		{
-			UE_LOG(LogAura, Warning, TEXT("%s is Unhighlight"), *GetName())
-		}
-		bHighlight = bCond;
-		if(bHighlight)
-		{
-			HighlightActor();
-		}
-		else
-		{
-			UnHighlightActor();
-		}
-	}
+	void SetHighlight(bool bCond);
 	FORCEINLINE bool GetHighlight() const { return bHighlight;}
 };
