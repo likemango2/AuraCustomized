@@ -64,8 +64,6 @@ void UAuraAbilitySystemComponent::ClientOnGameplayEffectApplied_Implementation(
 	UAbilitySystemComponent* InAbilityComponent, const FGameplayEffectSpec& GameplayEffectSpec,
 	FActiveGameplayEffectHandle ActiveGameplayEffectHandle) const
 {
-	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Blue, FString::Printf(TEXT("Effect Applied : %s"), *GameplayEffectSpec.Def->GetName()));
-
 	FGameplayTagContainer TagContainer;
 	GameplayEffectSpec.GetAllAssetTags(TagContainer);
 	AppliedGameplayEffectAssetTags.Broadcast(TagContainer);

@@ -13,7 +13,13 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	// UKismetSystemLibrary::PrintString(this, FString("ActivateAbility (C++)"), true, true, FLinearColor::Yellow, 3);
 
-	if(!HasAuthority(&ActivationInfo)) return;
+	
+}
+
+void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
+{
+	const bool IsServer = GetAvatarActorFromActorInfo()->HasAuthority();
+	if(!IsServer) return;
 
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
 	if(CombatInterface)
@@ -21,7 +27,10 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
-		// TODO: SET ROTATION
+		const FVector Direction = (TargetLocation - SocketLocation).GetSafeNormal();
+		FRotator Rotator = Direction.Rotation();
+		Rotator.Pitch = 0.f; //(Pitch,Yaw,Roll -- Y,Z,X)
+		SpawnTransform.SetRotation(Rotator.Quaternion());
 
 		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(
 			ProjectileClass,
