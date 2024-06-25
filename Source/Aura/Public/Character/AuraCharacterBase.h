@@ -49,4 +49,10 @@ public:
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, int32 Level) const;
 	void InitializeDefaultAttributes() const;
 	void GiveStartupAbilities();
+
+protected:
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	FName WeaponTipSocketName;
+	
+	virtual FVector GetCombatSocketLocation() const override;
 };

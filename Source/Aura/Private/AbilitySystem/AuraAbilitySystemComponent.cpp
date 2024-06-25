@@ -3,7 +3,7 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
-#include "AbilitySystem/AuraGameplayAbility.h"
+#include "AbilitySystem/Abilities/AuraGameplayAbility.h"
 
 UAuraAbilitySystemComponent::UAuraAbilitySystemComponent()
 {
