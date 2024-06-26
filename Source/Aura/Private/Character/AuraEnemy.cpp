@@ -48,6 +48,8 @@ void AAuraEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->BindOnGameplayEffectApplied();
+
+	InitializeDefaultAttributes();
 }
 
 int32 AAuraEnemy::GetPlayerLevel() const

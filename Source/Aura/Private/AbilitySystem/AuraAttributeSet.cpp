@@ -5,6 +5,7 @@
 
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
+#include "Aura/Aura.h"
 #include "Net/UnrealNetwork.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -76,6 +77,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+		UE_LOG(LogAura, Warning, TEXT("%s changed health: %f"), *Data.Target.GetAvatarActor()->GetName(), GetHealth());
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
