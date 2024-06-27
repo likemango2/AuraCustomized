@@ -25,8 +25,17 @@ protected:
 	virtual int32 GetPlayerLevel() const override;
 	
 private:
-	virtual void InitAbilityActorInfo() override;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes", meta=(AllowPrivateAccess))
+	TSubclassOf<UGameplayEffect> InitialPrimaryAttributes;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes", meta=(AllowPrivateAccess))
+	TSubclassOf<UGameplayEffect> InitialSecondaryAttributes;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes", meta=(AllowPrivateAccess))
+	TSubclassOf<UGameplayEffect> InitialVitalAttributes;
+	
+	virtual void InitAbilityActorInfo() override;
+	virtual void InitializeDefaultAttributes() const override;
 	// void OnApplyActivateGameplayEffectCallback(UAbilitySystemComponent* SelfAbilitySystemComponent, const FGameplayEffectSpec& GameplayEffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle) const;
 	// void OnRemoveGameplayEffectCallback(const FActiveGameplayEffect& ActiveGameplayEffect) const;
 };

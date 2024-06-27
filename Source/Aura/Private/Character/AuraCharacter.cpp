@@ -77,6 +77,13 @@ void AAuraCharacter::InitAbilityActorInfo()
 	// AbilitySystemComponent->OnAnyGameplayEffectRemovedDelegate().AddUObject(this, &AAuraCharacter::OnRemoveGameplayEffectCallback);
 }
 
+void AAuraCharacter::InitializeDefaultAttributes() const
+{
+	ApplyEffectToSelf(InitialPrimaryAttributes, GetPlayerLevel());
+	ApplyEffectToSelf(InitialSecondaryAttributes, GetPlayerLevel());
+	ApplyEffectToSelf(InitialVitalAttributes, GetPlayerLevel());
+}
+
 // void AAuraCharacter::OnApplyActivateGameplayEffectCallback(UAbilitySystemComponent* SelfAbilitySystemComponent,const FGameplayEffectSpec& GameplayEffectSpec,
 // 	FActiveGameplayEffectHandle ActiveGameplayEffectHandle) const
 // {

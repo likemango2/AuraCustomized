@@ -34,20 +34,11 @@ public:
 	UPROPERTY()
 	TObjectPtr<const UAttributeSet> AttributeSet;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
-	TSubclassOf<UGameplayEffect> GEInitialPrimaryAttributes;
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
-	TSubclassOf<UGameplayEffect> GEInitialSecondaryAttributes;
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
-	TSubclassOf<UGameplayEffect> GEInitialVitalAttributes;
-
 	UPROPERTY(EditAnywhere, Category="Ability")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, int32 Level) const;
-	void InitializeDefaultAttributes() const;
+	virtual void InitializeDefaultAttributes() const;
 	void GiveStartupAbilities();
 
 protected:

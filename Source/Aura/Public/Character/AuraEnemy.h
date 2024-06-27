@@ -4,11 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "AuraCharacterBase.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Aura/Aura.h"
 #include "Interface/EnemyInterface.h"
 #include "UI/Controller/OverlayWidgetController.h"
 #include "AuraEnemy.generated.h"
 
+enum class ECharacterClass : uint8;
 class UWidgetComponent;
 
 UCLASS()
@@ -26,6 +28,10 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
 	virtual int32 GetPlayerLevel() const override;
+	virtual void InitializeDefaultAttributes() const override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
