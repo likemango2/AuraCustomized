@@ -44,6 +44,9 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName WeaponTipSocketName;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TObjectPtr<UAnimMontage> HitReactMontage;
 	
 	virtual FVector GetCombatSocketLocation() const override;
+	UAnimMontage* GetHitReactMontage_Implementation() override;
 };
