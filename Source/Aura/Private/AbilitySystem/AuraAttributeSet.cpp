@@ -87,7 +87,8 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		float IncomingDamageValue = GetIncomingDamage();
 		SetIncomingDamage(0);
-		float NewHealth = FMath::Clamp(GetHealth() - IncomingDamageValue, 0, GetMaxHealth());
+		float NewHealth = FMath::Clamp(GetHealth() - IncomingDamageValue, 0.f, GetMaxHealth());
+		UE_LOG(LogAura, Warning, TEXT("New Health: %f"), NewHealth);
 		SetHealth(NewHealth);
 	}
 }
