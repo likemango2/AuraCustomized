@@ -48,10 +48,10 @@ void AAuraCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
-int32 AAuraCharacter::GetPlayerLevel() const
+int32 AAuraCharacter::GetCharacterLevel() const
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
-	if(!AuraPlayerState) return Super::GetPlayerLevel();
+	if(!AuraPlayerState) return Super::GetCharacterLevel();
 	return AuraPlayerState->GetPlayerLevel();
 }
 
@@ -79,9 +79,9 @@ void AAuraCharacter::InitAbilityActorInfo()
 
 void AAuraCharacter::InitializeDefaultAttributes() const
 {
-	ApplyEffectToSelf(InitialPrimaryAttributes, GetPlayerLevel());
-	ApplyEffectToSelf(InitialSecondaryAttributes, GetPlayerLevel());
-	ApplyEffectToSelf(InitialVitalAttributes, GetPlayerLevel());
+	ApplyEffectToSelf(InitialPrimaryAttributes, GetCharacterLevel());
+	ApplyEffectToSelf(InitialSecondaryAttributes, GetCharacterLevel());
+	ApplyEffectToSelf(InitialVitalAttributes, GetCharacterLevel());
 }
 
 // void AAuraCharacter::OnApplyActivateGameplayEffectCallback(UAbilitySystemComponent* SelfAbilitySystemComponent,const FGameplayEffectSpec& GameplayEffectSpec,

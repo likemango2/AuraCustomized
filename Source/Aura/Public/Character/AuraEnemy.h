@@ -27,9 +27,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
-	virtual int32 GetPlayerLevel() const override;
+	virtual int32 GetCharacterLevel() const override;
 	virtual void InitializeDefaultAttributes() const override;
-
+	virtual void InitializeCommonAbilities() const;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 

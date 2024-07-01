@@ -22,7 +22,7 @@ public:
 	virtual void OnRep_PlayerState() override;
 
 protected:
-	virtual int32 GetPlayerLevel() const override;
+	virtual int32 GetCharacterLevel() const override;
 	
 private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes", meta=(AllowPrivateAccess))

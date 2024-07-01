@@ -90,6 +90,20 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		float NewHealth = FMath::Clamp(GetHealth() - IncomingDamageValue, 0.f, GetMaxHealth());
 		UE_LOG(LogAura, Warning, TEXT("New Health: %f"), NewHealth);
 		SetHealth(NewHealth);
+
+		bool bFatal = NewHealth <= 0;
+		if(!bFatal)
+		{
+			FGameplayTagContainer TagContainer;
+			TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
+			bool bSuccess = GetOwningAbilitySystemComponentChecked()->TryActivateAbilitiesByTag(TagContainer);
+
+			if(bSuccess)
+			{
+				UE_LOG(LogAura, Warning, TEXT("Activate Hit React Ability by Effects_HitReact!"));
+			}
+		}
+		
 	}
 }
 

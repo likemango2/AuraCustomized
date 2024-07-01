@@ -49,6 +49,9 @@ void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	InitAbilityActorInfo();
+	InitializeDefaultAttributes();
+	InitializeCommonAbilities();
+	
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	if(UAuraUserWidget* AuraUserWidget = Cast<UAuraUserWidget>(HealthBar->GetUserWidgetObject()))
 	{
@@ -68,25 +71,30 @@ void AAuraEnemy::BeginPlay()
 		OnHealthChanged.Broadcast(AuraAttributeSet->GetHealth());
 		OnMaxHealthChanged.Broadcast(AuraAttributeSet->GetMaxHealth());
 	}
-	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AAuraEnemy::HitReactTagChanged);
+	// Register event when any gameplay tag happened on character
+	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved).
+		AddUObject(this, &AAuraEnemy::HitReactTagChanged);
 }
 
 void AAuraEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->BindOnGameplayEffectApplied();
-
-	InitializeDefaultAttributes();
 }
 
-int32 AAuraEnemy::GetPlayerLevel() const
+int32 AAuraEnemy::GetCharacterLevel() const
 {
 	return Level;
 }
 
 void AAuraEnemy::InitializeDefaultAttributes() const
 {
-	UAuraAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, GetPlayerLevel(), AbilitySystemComponent);	
+	UAuraAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, GetCharacterLevel(), AbilitySystemComponent);	
+}
+
+void AAuraEnemy::InitializeCommonAbilities() const
+{
+	UAuraAbilitySystemLibrary::InitializeCommonAbilities(this, GetCharacterLevel(), AbilitySystemComponent);
 }
 
 void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
