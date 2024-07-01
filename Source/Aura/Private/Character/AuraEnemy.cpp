@@ -97,6 +97,12 @@ void AAuraEnemy::InitializeCommonAbilities() const
 	UAuraAbilitySystemLibrary::InitializeCommonAbilities(this, GetCharacterLevel(), AbilitySystemComponent);
 }
 
+void AAuraEnemy::Die()
+{
+	SetLifeSpan(LiftSpan);
+	Super::Die();
+}
+
 void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	bHitReacting = NewCount > 0;

@@ -30,6 +30,7 @@ protected:
 	virtual int32 GetCharacterLevel() const override;
 	virtual void InitializeDefaultAttributes() const override;
 	virtual void InitializeCommonAbilities() const;
+	virtual void Die() override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
@@ -47,6 +48,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Combat")
 	float BaseWalkSpeed = 250.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	float LiftSpan = 5.f;
 	
 private:
 	UPROPERTY(VisibleAnywhere)

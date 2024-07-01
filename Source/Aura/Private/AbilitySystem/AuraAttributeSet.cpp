@@ -6,6 +6,7 @@
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "Aura/Aura.h"
+#include "Interface/CombatInterface.h"
 #include "Net/UnrealNetwork.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -103,7 +104,14 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				UE_LOG(LogAura, Warning, TEXT("Activate Hit React Ability by Effects_HitReact!"));
 			}
 		}
-		
+		else
+		{
+			ICombatInterface* CombatInterface =  Cast<ICombatInterface>(Data.Target.GetAvatarActor());
+			if(CombatInterface)
+			{
+				CombatInterface->Die();
+			}
+		}
 	}
 }
 
