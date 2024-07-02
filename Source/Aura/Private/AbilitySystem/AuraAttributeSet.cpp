@@ -6,8 +6,11 @@
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "Aura/Aura.h"
+#include "GameFramework/Character.h"
 #include "Interface/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Player/AuraPlayerController.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -112,8 +115,22 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				CombatInterface->Die();
 			}
 		}
+		ShowFloatingText(Data, IncomingDamageValue);
 	}
 }
+void UAuraAttributeSet::ShowFloatingText(const FGameplayEffectModCallbackData& Data, float Damage) const
+{
+	ACharacter* TargetCharacter = Cast<ACharacter>(Data.Target.GetAvatarActor());
+	ACharacter* SourceCharacter = Cast<ACharacter>(Data.EffectSpec.GetContext().GetSourceObject());
+	if(SourceCharacter != TargetCharacter)
+	{
+		if(AAuraPlayerController* PC = CastChecked<AAuraPlayerController>(UGameplayStatics::GetPlayerController(TargetCharacter, 0)))
+		{
+			PC->ShowDamageNumber(Damage, TargetCharacter);
+		}
+	}
+}
+
 
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
 {

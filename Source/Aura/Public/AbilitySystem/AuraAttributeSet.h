@@ -160,4 +160,7 @@ public:
 
 	UPROPERTY()
 	TMap<FGameplayTag, FGameplayAttribute> TagToAttributes;
+
+private:
+	void ShowFloatingText(const FGameplayEffectModCallbackData& Data, float Damage) const;
 };
