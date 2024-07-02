@@ -20,5 +20,10 @@ public:
 	virtual void Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const override;
 
 private:
+	FGameplayEffectAttributeCaptureDefinition BlockChanceDef;
 	FGameplayEffectAttributeCaptureDefinition ArmorDef;
+	FGameplayEffectAttributeCaptureDefinition ArmorPenetrationDef;
+	FGameplayEffectAttributeCaptureDefinition CriticalHitChanceDef;
+	FGameplayEffectAttributeCaptureDefinition CriticalHitResistanceDef;
+	FGameplayEffectAttributeCaptureDefinition CriticalHitDamageDef;
 };
