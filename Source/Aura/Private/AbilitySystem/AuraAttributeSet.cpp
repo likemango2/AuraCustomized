@@ -5,6 +5,7 @@
 
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Aura/Aura.h"
 #include "GameFramework/Character.h"
 #include "Interface/CombatInterface.h"
@@ -115,10 +116,12 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				CombatInterface->Die();
 			}
 		}
-		ShowFloatingText(Data, IncomingDamageValue);
+		const bool bBlock = UAuraAbilitySystemLibrary::IsBlockedHit(Data.EffectSpec.GetEffectContext());
+		const bool bCriticalHit = UAuraAbilitySystemLibrary::IsCriticalHit(Data.EffectSpec.GetEffectContext());
+		ShowFloatingText(Data, IncomingDamageValue, bBlock, bCriticalHit);
 	}
 }
-void UAuraAttributeSet::ShowFloatingText(const FGameplayEffectModCallbackData& Data, float Damage) const
+void UAuraAttributeSet::ShowFloatingText(const FGameplayEffectModCallbackData& Data, float Damage, bool bBlockedHit, bool bCriticalHit) const
 {
 	ACharacter* TargetCharacter = Cast<ACharacter>(Data.Target.GetAvatarActor());
 	ACharacter* SourceCharacter = Cast<ACharacter>(Data.EffectSpec.GetContext().GetSourceObject());

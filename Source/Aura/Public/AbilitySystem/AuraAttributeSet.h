@@ -162,5 +162,5 @@ public:
 	TMap<FGameplayTag, FGameplayAttribute> TagToAttributes;
 
 private:
-	void ShowFloatingText(const FGameplayEffectModCallbackData& Data, float Damage) const;
+	void ShowFloatingText(const FGameplayEffectModCallbackData& Data, float Damage, bool bBlockedHit, bool bCriticalHit) const;
 };
