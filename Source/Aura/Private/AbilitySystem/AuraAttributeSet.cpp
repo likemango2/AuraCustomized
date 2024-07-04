@@ -129,7 +129,7 @@ void UAuraAttributeSet::ShowFloatingText(const FGameplayEffectModCallbackData& D
 	{
 		if(AAuraPlayerController* PC = CastChecked<AAuraPlayerController>(UGameplayStatics::GetPlayerController(TargetCharacter, 0)))
 		{
-			PC->ShowDamageNumber(Damage, TargetCharacter);
+			PC->ShowDamageNumber(Damage, TargetCharacter, bBlockedHit, bCriticalHit);
 		}
 	}
 }

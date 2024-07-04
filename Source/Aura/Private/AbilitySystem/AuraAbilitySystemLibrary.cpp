@@ -57,6 +57,8 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* World
 	float Level, UAbilitySystemComponent* ASC)
 {
 	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContext);
+	if(!CharacterClassInfo) return;
+	
 	AActor* AvatarActor = ASC->GetAvatarActor();
 	
 	FCharacterClassDefaultInfo ClassDefaultInfo = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
@@ -80,10 +82,13 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* World
 void UAuraAbilitySystemLibrary::InitializeCommonAbilities(const UObject* WorldContext, float Level, UAbilitySystemComponent* AbilitySystemComponent)
 {
 	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContext);
-	for(const TSubclassOf<UGameplayAbility>& Ability : CharacterClassInfo->CommonAbilities)
+	if(CharacterClassInfo)
 	{
-		FGameplayAbilitySpec GameplayAbilitySpec = FGameplayAbilitySpec(Ability, Level);
-		AbilitySystemComponent->GiveAbility(GameplayAbilitySpec);
+		for(const TSubclassOf<UGameplayAbility>& Ability : CharacterClassInfo->CommonAbilities)
+		{
+			FGameplayAbilitySpec GameplayAbilitySpec = FGameplayAbilitySpec(Ability, Level);
+			AbilitySystemComponent->GiveAbility(GameplayAbilitySpec);
+		}
 	}
 }
 

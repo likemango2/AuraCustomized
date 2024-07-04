@@ -45,7 +45,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
 		// Give the projectile a gameplay effect spec for causing damage
 		const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
 		const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
-		const float ScaledDamage = Damage.GetValueAtLevel(10);
+		const float ScaledDamage = Damage.GetValueAtLevel(CombatInterface->GetCharacterLevel());
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, FAuraGameplayTags::Get().Damage, ScaledDamage);
 		Projectile->DamageGameplayEffectSpecHandle = SpecHandle;
 
