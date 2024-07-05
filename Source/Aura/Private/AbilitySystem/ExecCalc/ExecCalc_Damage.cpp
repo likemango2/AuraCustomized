@@ -4,6 +4,7 @@
 #include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
 
 #include "AuraGameplayTags.h"
+#include "GameplayTagsManager.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
@@ -35,6 +36,32 @@ UExecCalc_Damage::UExecCalc_Damage()
 	CriticalHitResistanceDef.AttributeToCapture = UAuraAttributeSet::GetCriticalHitResistanceAttribute();
 	CriticalHitResistanceDef.bSnapshot = false;
 	RelevantAttributesToCapture.Add(CriticalHitResistanceDef);
+
+	FireResistanceDef.AttributeSource = EGameplayEffectAttributeCaptureSource::Target;
+	FireResistanceDef.AttributeToCapture = UAuraAttributeSet::GetFireResistanceAttribute();
+	FireResistanceDef.bSnapshot = false;
+	RelevantAttributesToCapture.Add(FireResistanceDef);
+	
+	LightningResistanceDef.AttributeSource = EGameplayEffectAttributeCaptureSource::Target;
+	LightningResistanceDef.AttributeToCapture = UAuraAttributeSet::GetLightningResistanceAttribute();
+	LightningResistanceDef.bSnapshot = false;
+	RelevantAttributesToCapture.Add(LightningResistanceDef);
+	
+	ArcaneResistanceDef.AttributeSource = EGameplayEffectAttributeCaptureSource::Target;
+	ArcaneResistanceDef.AttributeToCapture = UAuraAttributeSet::GetArcaneResistanceAttribute();
+	ArcaneResistanceDef.bSnapshot = false;
+	RelevantAttributesToCapture.Add(ArcaneResistanceDef);
+	
+	PhysicalResistanceDef.AttributeSource = EGameplayEffectAttributeCaptureSource::Target;
+	PhysicalResistanceDef.AttributeToCapture = UAuraAttributeSet::GetPhysicalResistanceAttribute();
+	PhysicalResistanceDef.bSnapshot = false;
+	RelevantAttributesToCapture.Add(PhysicalResistanceDef);
+
+	ResistanceToCaptureDefinition.Add(FName("Attributes.Resistance.Fire"), FireResistanceDef);
+	ResistanceToCaptureDefinition.Add(FName("Attributes.Resistance.Lightning"), LightningResistanceDef);
+	ResistanceToCaptureDefinition.Add(FName("Attributes.Resistance.Arcane"), ArcaneResistanceDef);
+	ResistanceToCaptureDefinition.Add(FName("Attributes.Resistance.Physical"), PhysicalResistanceDef);
+
 }
 
 void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
@@ -47,15 +74,31 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	FAggregatorEvaluateParameters EvaluationParameters;
 	EvaluationParameters.SourceTags = SourceTags;
-	EvaluationParameters.TargetTags = TargetTags;
+	EvaluationParameters.TargetTags = TargetTags; 
 
 	AActor* SourceAvatar = ExecutionParams.GetSourceAbilitySystemComponent() ? ExecutionParams.GetSourceAbilitySystemComponent()->GetAvatarActor() : nullptr;
 	AActor* TargetAvatar = ExecutionParams.GetTargetAbilitySystemComponent() ? ExecutionParams.GetTargetAbilitySystemComponent()->GetAvatarActor() : nullptr;
 	ICombatInterface* SourceCombatInterface = Cast<ICombatInterface>(SourceAvatar);
 	ICombatInterface* TargetCombatInterface = Cast<ICombatInterface>(TargetAvatar);
-	
-	// get damage by SetByCallerMagnitude
-	float Damage = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
+
+	// get damage by SetByCallerMagnitude and take resistance into consideration.
+	float Damage = 0;
+	for(const TTuple<FGameplayTag, FGameplayTag>& Tuple : FAuraGameplayTags::Get().DamageTypesToResistances)
+	{
+		const FGameplayTag DamageTypeTag = Tuple.Key;
+		const FGameplayTag ResistanceTypeTag = Tuple.Value;
+
+		checkf(ResistanceToCaptureDefinition.Contains(ResistanceTypeTag.GetTagName()), TEXT("ResistanceToCaptureDefinition doesn't contain Tag: [%s] in ExecCalc_Damage"), *ResistanceTypeTag.ToString());
+		float ResistanceValue = 0;
+		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(ResistanceToCaptureDefinition[ResistanceTypeTag.GetTagName()], EvaluationParameters, ResistanceValue);
+		ResistanceValue = FMathf::Clamp(ResistanceValue, 0, 100.f);
+		
+		float TypeDamage = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(DamageTypeTag);
+		TypeDamage = FMathf::Max(0, TypeDamage);
+		
+		TypeDamage *= (100.f - ResistanceValue) / 100.f;
+		Damage += TypeDamage;
+	}
 
 	// target blockChance
 	float TargetBlockChance = 0;

@@ -26,4 +26,12 @@ private:
 	FGameplayEffectAttributeCaptureDefinition CriticalHitChanceDef;
 	FGameplayEffectAttributeCaptureDefinition CriticalHitResistanceDef;
 	FGameplayEffectAttributeCaptureDefinition CriticalHitDamageDef;
+	FGameplayEffectAttributeCaptureDefinition FireResistanceDef;
+	FGameplayEffectAttributeCaptureDefinition LightningResistanceDef;
+	FGameplayEffectAttributeCaptureDefinition ArcaneResistanceDef;
+	FGameplayEffectAttributeCaptureDefinition PhysicalResistanceDef;
+
+	UPROPERTY()
+	TMap<FName, FGameplayEffectAttributeCaptureDefinition> ResistanceToCaptureDefinition;
+
 };
