@@ -73,8 +73,6 @@ void AAuraCharacter::InitAbilityActorInfo()
 		}
 	}
 	InitializeDefaultAttributes();
-	// AbilitySystemComponent->OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &AAuraCharacter::OnApplyActivateGameplayEffectCallback);
-	// AbilitySystemComponent->OnAnyGameplayEffectRemovedDelegate().AddUObject(this, &AAuraCharacter::OnRemoveGameplayEffectCallback);
 }
 
 void AAuraCharacter::InitializeDefaultAttributes() const
@@ -83,15 +81,3 @@ void AAuraCharacter::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(InitialSecondaryAttributes, GetCharacterLevel());
 	ApplyEffectToSelf(InitialVitalAttributes, GetCharacterLevel());
 }
-
-// void AAuraCharacter::OnApplyActivateGameplayEffectCallback(UAbilitySystemComponent* SelfAbilitySystemComponent,const FGameplayEffectSpec& GameplayEffectSpec,
-// 	FActiveGameplayEffectHandle ActiveGameplayEffectHandle) const
-// {
-// 	UE_LOG(LogAura, Warning, TEXT("Apply Gameplay Effect: %s" ), *GameplayEffectSpec.Def->GetName());
-// 	UE_LOG(LogAura, Warning, TEXT("It's in the FActiveGameplayEffectsContainer index: %s" ), *ActiveGameplayEffectHandle.ToString());
-// }
-//
-// void AAuraCharacter::OnRemoveGameplayEffectCallback(const FActiveGameplayEffect& ActiveGameplayEffect) const
-// {
-// 	UE_LOG(LogAura, Warning, TEXT("Remove Gameplay Effect: %s" ), *ActiveGameplayEffect.Spec.Def->GetName());
-// }

@@ -36,7 +36,7 @@ private:
 	void OnRep_Level(int32 OldLevel);
 	
 public:
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override {return AbilitySystemComponent;}
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	const UAttributeSet* GetAttributeSet() const;
 	FORCEINLINE int32 GetPlayerLevel() const { return Level;}
 };

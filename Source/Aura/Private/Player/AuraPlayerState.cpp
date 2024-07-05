@@ -29,6 +29,11 @@ void AAuraPlayerState::OnRep_Level(int32 OldLevel)
 	
 }
 
+UAbilitySystemComponent* AAuraPlayerState::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
 const UAttributeSet* AAuraPlayerState::GetAttributeSet() const
 {
 	if(GetAbilitySystemComponent())

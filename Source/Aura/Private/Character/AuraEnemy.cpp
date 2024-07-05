@@ -49,8 +49,12 @@ void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	InitAbilityActorInfo();
-	InitializeDefaultAttributes();
-	InitializeCommonAbilities();
+	
+	if(HasAuthority())
+	{
+		InitializeDefaultAttributes();
+		InitializeCommonAbilities();
+	}
 	
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	if(UAuraUserWidget* AuraUserWidget = Cast<UAuraUserWidget>(HealthBar->GetUserWidgetObject()))
