@@ -37,6 +37,7 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 
 	// server
 	InitAbilityActorInfo();
+	InitializeDefaultAttributes();
 	GiveStartupAbilities();
 }
 
@@ -72,7 +73,6 @@ void AAuraCharacter::InitAbilityActorInfo()
 			AuraHUD->CreateOverlayWidget(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	InitializeDefaultAttributes();
 }
 
 void AAuraCharacter::InitializeDefaultAttributes() const

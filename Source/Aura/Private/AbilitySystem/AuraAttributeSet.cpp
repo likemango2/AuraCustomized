@@ -82,6 +82,9 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
+
+	FEffectProperties EffectProperties;
+	SetEffectProperties(Data, EffectProperties);
 	
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
@@ -125,15 +128,58 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		ShowFloatingText(Data, IncomingDamageValue, bBlock, bCriticalHit);
 	}
 }
+
+void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Prop)
+{
+	// Source = causer of the effect, Target = target of the effect (owner of this AS)
+	Prop.EffectContextHandle = Data.EffectSpec.GetContext();
+	Prop.SourceASC = Data.EffectSpec.GetContext().GetOriginalInstigatorAbilitySystemComponent();
+
+	if(IsValid(Prop.SourceASC) && Prop.SourceASC->AbilityActorInfo.IsValid() && Prop.SourceASC->AbilityActorInfo->AvatarActor.IsValid())
+	{
+		Prop.SourceAvatarActor = Prop.SourceASC->AbilityActorInfo->AvatarActor.Get();
+		Prop.SourceController = Prop.SourceASC->AbilityActorInfo->PlayerController.Get();
+		if(Prop.SourceController == nullptr && Prop.SourceAvatarActor != nullptr)
+		{
+			if(APawn* Pawn = Cast<APawn>(Prop.SourceAvatarActor))
+			{
+				Prop.SourceController = Pawn->GetController();
+				Prop.SourceCharacter = Cast<ACharacter>(Pawn);
+			}
+		}
+	}
+	if(Data.Target.AbilityActorInfo.IsValid() && Data.Target.AbilityActorInfo->AvatarActor.IsValid())
+	{
+		Prop.TargetASC = &Data.Target;
+		Prop.TargetAvatarActor = Data.Target.AbilityActorInfo->AvatarActor.Get();
+		Prop.TargetCharacter = Cast<ACharacter>(Prop.TargetAvatarActor);
+		Prop.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
+	}
+}
+
 void UAuraAttributeSet::ShowFloatingText(const FGameplayEffectModCallbackData& Data, float Damage, bool bBlockedHit, bool bCriticalHit) const
 {
-	ACharacter* TargetCharacter = Cast<ACharacter>(Data.Target.GetAvatarActor());
-	ACharacter* SourceCharacter = Cast<ACharacter>(Data.EffectSpec.GetContext().GetSourceObject());
+	FGameplayEffectContextHandle EffectContextHandle =  Data.EffectSpec.GetContext();
+    UAbilitySystemComponent* SourceASC = EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
+	
+	ACharacter* TargetCharacter = nullptr;
+	ACharacter* SourceCharacter = nullptr;
+	if(SourceASC && SourceASC->AbilityActorInfo.IsValid())
+	{
+		SourceCharacter = Cast<ACharacter>(SourceASC->AbilityActorInfo->AvatarActor);
+	}
+	if(IsValid(&Data.Target))
+	{
+		TargetCharacter = Cast<ACharacter>(Data.Target.AbilityActorInfo->AvatarActor);
+	}
 	if(SourceCharacter != TargetCharacter)
 	{
-		if(AAuraPlayerController* PC = CastChecked<AAuraPlayerController>(UGameplayStatics::GetPlayerController(TargetCharacter, 0)))
+		if(SourceASC->AbilityActorInfo->PlayerController.IsValid())
 		{
-			PC->ShowDamageNumber(Damage, TargetCharacter, bBlockedHit, bCriticalHit);
+			if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(SourceASC->AbilityActorInfo->PlayerController.Get()))
+			{
+				PC->ShowDamageNumber(Damage, TargetCharacter, bBlockedHit, bCriticalHit);
+			}
 		}
 	}
 }

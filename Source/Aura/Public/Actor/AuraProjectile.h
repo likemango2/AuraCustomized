@@ -39,8 +39,6 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float LiftSpan = 15.f;
 
-	bool bHit = false;
-
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraSystem> ImpactEffect;
 
