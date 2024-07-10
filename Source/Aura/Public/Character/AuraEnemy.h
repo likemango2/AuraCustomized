@@ -10,6 +10,8 @@
 #include "UI/Controller/OverlayWidgetController.h"
 #include "AuraEnemy.generated.h"
 
+class UBehaviorTree;
+class AAuraAIController;
 enum class ECharacterClass : uint8;
 class UWidgetComponent;
 
@@ -23,6 +25,7 @@ public:
 	
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+	virtual void PossessedBy(AController* NewController) override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -51,6 +54,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	float LiftSpan = 5.f;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY()
+	TObjectPtr<AAuraAIController> AuraAIController;
 	
 private:
 	UPROPERTY(VisibleAnywhere)
