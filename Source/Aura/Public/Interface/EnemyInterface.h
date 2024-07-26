@@ -6,7 +6,7 @@
 #include "UObject/Interface.h"
 #include "EnemyInterface.generated.h"
 
-UINTERFACE()
+UINTERFACE(BlueprintType)
 class UEnemyInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -24,4 +24,10 @@ public:
 
 	virtual void HighlightActor() = 0;
 	virtual void UnHighlightActor() = 0;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetCombatTarget(AActor* InCombatTarget);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	const AActor* GetCombatTarget();
 };

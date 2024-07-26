@@ -34,6 +34,8 @@ protected:
 	virtual void InitializeDefaultAttributes() const override;
 	virtual void InitializeStartupAbilities() const;
 	virtual void Die() override;
+	virtual const AActor* GetCombatTarget_Implementation() override;
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
@@ -60,6 +62,9 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<AAuraAIController> AuraAIController;
+
+	UPROPERTY()
+	TObjectPtr<AActor> CombatTarget;
 	
 private:
 	UPROPERTY(VisibleAnywhere)
