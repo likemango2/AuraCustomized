@@ -52,14 +52,6 @@ void AAuraCharacterBase::InitializeDefaultAttributes() const
 	
 }
 
-void AAuraCharacterBase::GiveStartupAbilities()
-{
-	UAuraAbilitySystemComponent* AuraAbilitySystemComponent = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
-	if(!HasAuthority()) return;
-
-	AuraAbilitySystemComponent->AddAbilitiesToCharacter(StartupAbilities);
-}
-
 FVector AAuraCharacterBase::GetCombatSocketLocation() const
 {
 	check(Weapon);

@@ -70,7 +70,7 @@ void AAuraEnemy::BeginPlay()
 	if(HasAuthority())
 	{
 		InitializeDefaultAttributes();
-		InitializeCommonAbilities();
+		InitializeStartupAbilities();
 	}
 	
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
@@ -113,9 +113,9 @@ void AAuraEnemy::InitializeDefaultAttributes() const
 	UAuraAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, GetCharacterLevel(), AbilitySystemComponent);	
 }
 
-void AAuraEnemy::InitializeCommonAbilities() const
+void AAuraEnemy::InitializeStartupAbilities() const
 {
-	UAuraAbilitySystemLibrary::InitializeCommonAbilities(this, GetCharacterLevel(), AbilitySystemComponent);
+	UAuraAbilitySystemLibrary::GiveStartupAbilities(this, GetCharacterLevel(), AbilitySystemComponent, CharacterClass);
 }
 
 void AAuraEnemy::Die()
@@ -129,7 +129,7 @@ void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCou
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0 : BaseWalkSpeed;
 
-	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangerAttacker"), bHitReacting);
+	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
 }
 
 void AAuraEnemy::SetHighlight(bool bCond)

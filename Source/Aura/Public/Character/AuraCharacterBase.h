@@ -33,9 +33,6 @@ public:
 	// attributeSet should be referenced as const ptr.
 	UPROPERTY()
 	TObjectPtr<const UAttributeSet> AttributeSet;
-
-	UPROPERTY(EditAnywhere, Category="Ability")
-	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, int32 Level) const;
 	virtual void InitializeDefaultAttributes() const;

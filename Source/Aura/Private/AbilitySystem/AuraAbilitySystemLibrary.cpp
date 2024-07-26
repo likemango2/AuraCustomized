@@ -77,10 +77,16 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* World
 	ASC->ApplyGameplayEffectSpecToSelf(*VitalGameplayEffectSpecHandle.Data);
 }
 
-void UAuraAbilitySystemLibrary::InitializeCommonAbilities(const UObject* WorldContext, float Level, UAbilitySystemComponent* AbilitySystemComponent)
+void UAuraAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContext, float Level,UAbilitySystemComponent* AbilitySystemComponent, ECharacterClass CharacterClass)
 {
 	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContext);
 	for(const TSubclassOf<UGameplayAbility>& Ability : CharacterClassInfo->CommonAbilities)
+	{
+		FGameplayAbilitySpec GameplayAbilitySpec = FGameplayAbilitySpec(Ability, Level);
+		AbilitySystemComponent->GiveAbility(GameplayAbilitySpec);
+	}
+	check(CharacterClassInfo->CharacterClassInformation.Contains(CharacterClass));
+	for(const TSubclassOf<UGameplayAbility>& Ability : CharacterClassInfo->CharacterClassInformation[CharacterClass].StartupAbilities)
 	{
 		FGameplayAbilitySpec GameplayAbilitySpec = FGameplayAbilitySpec(Ability, Level);
 		AbilitySystemComponent->GiveAbility(GameplayAbilitySpec);

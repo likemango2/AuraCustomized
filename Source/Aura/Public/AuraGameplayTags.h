@@ -52,6 +52,8 @@ public:
 	
 	FGameplayTag Effects_HitReact;
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
+
+	FGameplayTag Abilities_Attack;
 	
 private:
 	static FAuraGameplayTags GameplayTags;

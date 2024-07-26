@@ -81,3 +81,11 @@ void AAuraCharacter::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(InitialSecondaryAttributes, GetCharacterLevel());
 	ApplyEffectToSelf(InitialVitalAttributes, GetCharacterLevel());
 }
+
+void AAuraCharacter::GiveStartupAbilities()
+{
+	if(!HasAuthority()) return;
+	
+	UAuraAbilitySystemComponent* AuraAbilitySystemComponent = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
+	AuraAbilitySystemComponent->AddAbilitiesToCharacter(StartupAbilities);
+}

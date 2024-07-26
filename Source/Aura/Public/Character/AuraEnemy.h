@@ -32,7 +32,7 @@ protected:
 	virtual void InitAbilityActorInfo() override;
 	virtual int32 GetCharacterLevel() const override;
 	virtual void InitializeDefaultAttributes() const override;
-	virtual void InitializeCommonAbilities() const;
+	virtual void InitializeStartupAbilities() const;
 	virtual void Die() override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

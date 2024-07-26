@@ -34,8 +34,13 @@ private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes", meta=(AllowPrivateAccess))
 	TSubclassOf<UGameplayEffect> InitialVitalAttributes;
 	
+	UPROPERTY(EditAnywhere, Category="Ability")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+	
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
+	void GiveStartupAbilities();
+	
 	// void OnApplyActivateGameplayEffectCallback(UAbilitySystemComponent* SelfAbilitySystemComponent, const FGameplayEffectSpec& GameplayEffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle) const;
 	// void OnRemoveGameplayEffectCallback(const FActiveGameplayEffect& ActiveGameplayEffect) const;
 };
